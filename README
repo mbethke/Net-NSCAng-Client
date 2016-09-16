@@ -1,7 +1,8 @@
 Net-NSCAng-Client version 0.01
 ==============================
 
-This is a Perl interface to Alexander Golovko's NSCA-ng client library.
+This is a Perl/XS client module to submit host/service checks and arbitrary
+external commands to a monitoring server running NSCA-ng.
 
 INSTALLATION
 
@@ -14,7 +15,8 @@ To install this module type the following:
 
 DEPENDENCIES
 
-None. Testing requires Test::Exception though.
+None. Testing requires Test::More, Test::Exception, Test::Pod and
+Test::CheckManifest though.
 
 COPYRIGHT AND LICENCE
 

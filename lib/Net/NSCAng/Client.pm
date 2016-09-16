@@ -55,6 +55,12 @@ something like L<Monitoring::Plugin> that exports the same values, use
 C<:rcodes> as above to import them. The C<:all> tag is currently synonymous
 with C<:rcodes> but might export more things in te future.
 
+=head1 ERROR HANDLING
+
+None of the methods except for L<new>() return anything useful if they
+completed successfully.  Errors are signalled by dying with an error message,
+so use C<eval>, L<Try::Tiny> or the like.
+
 =head1 METHODS
 
 =head2 new
@@ -102,9 +108,6 @@ connection setup. Default is 10.
 
 =back
 
-The constructor dies with an error message if anything should go wrong, so use
-C<eval>, L<Try::Tiny> or the like.
-
 =cut
 
 sub new {
@@ -128,8 +131,6 @@ like for the constructor. The supported keys are C<node_name> and
 C<svc_description>, see L</new()> for their use. If specified here, the values
 override anything that may have been set in the constructor. If you haven't set
 them in the constructor, you MUST set them here though!
-
-Errors are signaled by dying with an error message.
 
 =cut
 
