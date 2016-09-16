@@ -343,7 +343,6 @@ has_timestamp_prefix(const char *s)
 int
 nscang_client_send_command(nscang_client_t *c, const char *command, int timeout)
 {
-   const int command_len = strlen(command);
 	char command_buf[1024];
 	char cmd[32];
 	int rc, len;
