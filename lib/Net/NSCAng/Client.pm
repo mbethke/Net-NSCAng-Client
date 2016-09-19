@@ -14,7 +14,7 @@ our %EXPORT_TAGS = (
 );
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{all} } );
 
-use version 0.77; our $VERSION = qv('v2.0.0');
+use version 0.77; our $VERSION = qv('v2.0_0');
 
 use constant OK         => 0;
 use constant WARNING    => 1;
@@ -184,12 +184,20 @@ __END__
 
 =head1 BUGS
 
-This module is not thread safe! Due do a workaround for the godawful OpenSSL
+=over 4
+
+=item This module is not thread safe! Due do a workaround for the godawful OpenSSL
 API, static data has to be used, and this I<will> cause problems with threads.
 The original Python library uses pthreads to get around that but due to Perl's
 different threading model this would probably not work. Using the C<MY_CXT>
 macros is a possibility but frankly I'm too lazy to try just for supporting
 Perl threads that don't work well in the first place.
+
+=item I have enabled extra compiler warnings for gcc. This may break things on
+other compilers and will unfortunately also spew a lot of warnings within Perl
+header files.
+
+=back
 
 =head1 SEE ALSO
 
