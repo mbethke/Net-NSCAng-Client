@@ -77,6 +77,6 @@ int nscang_client_send_command(nscang_client_t *c, const char *command, int time
 int nscang_client_send_push(nscang_client_t *c, char *host, char *service,
                             int status, char *message, int timeout);
 int nscang_client_send_quit(nscang_client_t *c);
-char *nscang_client_errstr(nscang_client_t *c, char *buf, int buf_size);
+char *nscang_client_errstr(nscang_client_t *c, char *buf, size_t buf_size);
 
 #endif /* __NSCANG_CLIENT_H */
