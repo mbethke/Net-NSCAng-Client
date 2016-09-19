@@ -187,7 +187,7 @@ _result(self, is_host_result, node_name, svc_description, return_code, plugin_ou
    OUTPUT:
       RETVAL
 
-SV *
+void
 command(self, command)
    Net::NSCAng::Client self
    SV * command
@@ -206,8 +206,8 @@ command(self, command)
       croak("command missing");
    }
 
-	if(nscang_client_send_command(client, ccommand, self->timeout))
-      XSRETURN_UNDEF;
+   if(nscang_client_send_command(client, ccommand, self->timeout))
+      return;
 
    if(client->_errno == NSCANG_ERROR_TIMEOUT)
 	   nscang_client_disconnect(client);
