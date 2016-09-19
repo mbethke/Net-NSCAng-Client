@@ -35,7 +35,7 @@
 
 static nscang_client_t *nscang_client_instances;
 
-unsigned int
+static unsigned int
 set_psk(SSL *ssl, const char *hint, char *identity,
         unsigned int max_identity_length, unsigned char *psk,
         unsigned int max_psk_length)
@@ -45,15 +45,15 @@ set_psk(SSL *ssl, const char *hint, char *identity,
    HASH_FIND_PTR(nscang_client_instances, &ssl, c);
 	if (c != NULL) {
 		strncpy(identity, c->identity, max_identity_length);
-		identity[max_identity_length - 1] = 0x00;
+		identity[max_identity_length - 1] = '\0';
 
 		strncpy((char *)psk, c->psk, max_psk_length);
-		psk[max_psk_length - 1] = 0x00;
+		psk[max_psk_length - 1] = '\0';
 
-		return strlen((char *)psk);
+		return (unsigned int)strlen((char *)psk);
 	}
-	identity[0] = 0x00;
-	psk[0] = 0x00;
+	identity[0] = '\0';
+	psk[0] = '\0';
 	return 0;
 }
 
@@ -147,7 +147,7 @@ nscang_client_free(nscang_client_t *c)
 }
 
 int
-nscang_client_write(nscang_client_t *c, void *buf, int len, int timeout)
+nscang_client_write(nscang_client_t *c, void *buf, size_t len, int timeout)
 {
 	int rc;
 	time_t endtime;
@@ -160,7 +160,8 @@ nscang_client_write(nscang_client_t *c, void *buf, int len, int timeout)
 	endtime = time(NULL) + timeout;
 
 	while (1) {
-		if ((rc = SSL_write(c->ssl, buf, len)) > 0)
+      // Risk a short write if someone should be mad enough to pass len > INT_MAX
+		if ((rc = SSL_write(c->ssl, buf, (int)len)) > 0)
 			return 1;
 
 		if (!BIO_should_retry(c->bio)) {
@@ -293,7 +294,8 @@ int
 nscang_client_send_moin(nscang_client_t *c, int timeout)
 {
 	char cmd[64];
-	int len, rc;
+	size_t len;
+   int rc;
 
 	if (c->state == NSCANG_STATE_MOIN)
 		return 1;
@@ -303,8 +305,8 @@ nscang_client_send_moin(nscang_client_t *c, int timeout)
 		return 0;
 	}
 
-	srandom(time(NULL));
-	len = snprintf(cmd, sizeof(cmd), "MOIN 1 %08ld%08ld\r\n", random(),
+	srandom((unsigned int)time(NULL));
+	len = (size_t)snprintf(cmd, sizeof(cmd), "MOIN 1 %08ld%08ld\r\n", random(),
 	    random());
 
 	if (!nscang_client_write(c, cmd, len, timeout))
@@ -345,7 +347,8 @@ nscang_client_send_command(nscang_client_t *c, const char *command, int timeout)
 {
 	char command_buf[1024];
 	char cmd[32];
-	int rc, len;
+	int rc;
+   size_t len;
 
    switch( has_timestamp_prefix(command) ) {
       case 0 :
@@ -375,7 +378,7 @@ nscang_client_send_command(nscang_client_t *c, const char *command, int timeout)
 	if (!nscang_client_send_moin(c, timeout))
       return 0;
 
-   snprintf(cmd, sizeof(cmd), "PUSH %d\r\n", len);
+   snprintf(cmd, sizeof(cmd), "PUSH %d\r\n", (int)len);
 	if (!nscang_client_write(c, cmd, strlen(cmd), timeout))
       return 0;
 
@@ -438,7 +441,7 @@ nscang_client_send_quit(nscang_client_t *c)
 }
 
 void
-nscang_client_ssl_error(char *buf, int buf_size, const char *msg) {
+nscang_client_ssl_error(char *buf, size_t buf_size, const char *msg) {
    strncpy(buf, msg, buf_size);
    buf_size--;
    strncat(buf, ":", buf_size);
@@ -446,7 +449,7 @@ nscang_client_ssl_error(char *buf, int buf_size, const char *msg) {
 }
 
 char *
-nscang_client_errstr(nscang_client_t *c, char *buf, int buf_size)
+nscang_client_errstr(nscang_client_t *c, char *buf, size_t buf_size)
 {
 	switch (c->_errno) {
 	case NSCANG_ERROR_SSL_CTX_CREATE:
