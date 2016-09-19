@@ -1,3 +1,5 @@
+use strict;
+use warnings;
 use 5.010001;
 use ExtUtils::MakeMaker;
 use ExtUtils::PkgConfig;
@@ -6,12 +8,14 @@ use Devel::CheckLib;
 my %openssl_info = ExtUtils::PkgConfig->find(qw/ eopenssl openssl /);
 die "OpenSSL must be v1.0 or higher" unless ExtUtils::PkgConfig->atleast_version('openssl', '1.0');
 
-my $libpath = ExtUtils::PkgConfig->libs_only_L($openssl_info{pkg});
-$libpath =~ s/-L//g;
-# If this is not set, non-default paths such as eopenssl's are not found on OpenBSD
-$ENV{LD_LIBRARY_PATH} //= '';
-$ENV{LD_LIBRARY_PATH} .= ':' if length $ENV{LD_LIBRARY_PATH};
-$ENV{LD_LIBRARY_PATH} .= $libpath;
+my $libpath = ExtUtils::PkgConfig->libs_only_L($openssl_info{pkg}) // '';
+if($libpath) {
+    $libpath =~ s/-L//g;
+    # If this is not set, non-default paths such as eopenssl's are not found on OpenBSD
+    $ENV{LD_LIBRARY_PATH} //= '';
+    $ENV{LD_LIBRARY_PATH} .= ':' if length $ENV{LD_LIBRARY_PATH};
+    $ENV{LD_LIBRARY_PATH} .= $libpath;
+}
 
 check_lib(
     lib => 'ssl',
