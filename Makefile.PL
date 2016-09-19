@@ -4,6 +4,7 @@ use 5.010001;
 use ExtUtils::MakeMaker;
 use ExtUtils::PkgConfig;
 use Devel::CheckLib;
+use Config;
 
 my %openssl_info = ExtUtils::PkgConfig->find(qw/ eopenssl openssl /);
 die "OpenSSL must be v1.0 or higher" unless ExtUtils::PkgConfig->atleast_version('openssl', '1.0');
@@ -60,6 +61,7 @@ WriteMakefile(
     LIBS              => [ ExtUtils::PkgConfig->libs($openssl_info{pkg}) ],
     DEFINE            => '',
     INC               => '-I.',
+    CCFLAGS           => "$Config{ccflags} -Wconversion -Wextra",
     OBJECT            => '$(O_FILES)',
     META_ADD          => {
         repository => {
