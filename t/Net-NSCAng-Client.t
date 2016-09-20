@@ -1,16 +1,15 @@
 use strict;
 use warnings;
 use POSIX qw(setlocale LC_ALL);
+BEGIN { setlocale(LC_ALL, "C"); }
 use Test::More tests => 14;
 use Test::Exception;
 use Config;
-use Net::NSCAng::Client;
-
 BEGIN {
-    setlocale(LC_ALL, "C");
     $Config{useithreads}
         and warn "WARNING: Net::NSCAng::Client is not thread safe but your perl has threads enabled!\n";
-};
+}
+use Net::NSCAng::Client;
 
 my @cparams = qw/ localhost myid s3cr3t /;
 my @nn = (node_name => 'here');

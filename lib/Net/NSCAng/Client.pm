@@ -14,7 +14,7 @@ our %EXPORT_TAGS = (
 );
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{all} } );
 
-use version 0.77; our $VERSION = qv('v2.0_0');
+use version 0.77; our $VERSION = qv('v2.0_1');
 
 use constant OK         => 0;
 use constant WARNING    => 1;
