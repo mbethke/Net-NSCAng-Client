@@ -39,6 +39,6 @@ sub crf {
     my $sub = shift;
     eval { $sub->() };
     if($@) {
-        die $@ unless $@ =~ /SSL error:Connection refused/;
+        die $@ unless $@ =~ /SSL error:/;
     }
 }
