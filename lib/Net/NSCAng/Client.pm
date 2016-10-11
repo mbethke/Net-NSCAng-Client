@@ -14,7 +14,7 @@ our %EXPORT_TAGS = (
 );
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{all} } );
 
-use version 0.77; our $VERSION = qv('v2.0_2');
+use version 0.77; our $VERSION = qv('v2.0_3');
 
 use constant OK         => 0;
 use constant WARNING    => 1;
@@ -113,10 +113,13 @@ connection setup. Default is 10.
 sub new {
     my ($class, $host, $identity, $psk) = splice(@_, 0, 4);
     my %args = @_%2 ? %{$_[0]} : @_;
-    $class->_new($host, $args{port} // 5668, $identity, $psk,
+    @_ = (
+        $class,
+        $host, $args{port} // 5668, $identity, $psk,
         @args{qw/ ciphers node_name svc_description /},
         $args{timeout} // 10,
     );
+    goto &_new;
 }
 
 =head2 svc_result
