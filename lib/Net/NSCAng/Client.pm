@@ -23,7 +23,7 @@ use constant UNKNOWN    => 3;
 use constant DEPENDENT  => 4;
 
 require XSLoader;
-XSLoader::load('Net::NSCAng::Client', $VERSION);
+XSLoader::load('Net::NSCAng::Client', "$VERSION");
 
 =head1 NAME
 
