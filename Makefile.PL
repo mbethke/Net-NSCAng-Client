@@ -66,8 +66,8 @@ WriteMakefile(
     META_ADD          => {
         repository => {
             type => 'git',
-            url => 'git@github.com:mbethke/nsca-ng.git',
-            web => 'https://github.com/mbethke/nsca-ng/tree/perl-module/perl',
+            url => 'git@github.com:mbethke/Net-NSCAng-Client.git',
+            web => 'https://github.com/mbethke/Net-NSCAng-Client',
         },
     },
     dist              => { COMPRESS => 'bzip2', SUFFIX => 'bz2', },
