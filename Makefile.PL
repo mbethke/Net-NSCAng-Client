@@ -54,6 +54,7 @@ WriteMakefile(
         'Test::More' => 0,
         'Test::Pod' => 0,
         'Test::CheckManifest' => 0,
+        'IO::Socket::INET' => 0,
     },
     ABSTRACT_FROM     => 'lib/Net/NSCAng/Client.pm', # retrieve abstract from module
     AUTHOR            => 'Matthias Bethke <matthias@towiski.de>',
@@ -61,7 +62,7 @@ WriteMakefile(
     LIBS              => [ ExtUtils::PkgConfig->libs($openssl_info{pkg}) ],
     DEFINE            => '',
     INC               => '-I.',
-    CCFLAGS           => "$Config{ccflags} -Wconversion -Wextra",
+    CCFLAGS           => "$Config{ccflags} -Wextra",
     OBJECT            => '$(O_FILES)',
     META_ADD          => {
         repository => {
