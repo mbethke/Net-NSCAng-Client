@@ -1,5 +1,5 @@
-Net-NSCAng-Client version 0.01
-==============================
+Net-NSCAng-Client
+=================
 
 This is a Perl/XS client module to submit host/service checks and arbitrary
 external commands to a monitoring server running NSCA-ng.
