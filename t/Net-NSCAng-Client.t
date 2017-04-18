@@ -11,7 +11,9 @@ BEGIN {
 }
 use Net::NSCAng::Client;
 
-my @cparams = qw/ localhost myid s3cr3t /;
+# This is not supposed to be a secure password. The account can't do anything, it's just
+# to keep passersby from trying too much
+my @cparams = qw/ nsca-ng-test.towiski.de tester hei9Cai4 /;
 my @nn = (node_name => 'here');
 my @sd = (svc_description => 'bogus');
 my $n;
