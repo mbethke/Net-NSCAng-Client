@@ -61,6 +61,12 @@ int
 nscang_client_init(nscang_client_t *c, char *host, int port, char *ciphers,
                    char *identity, char *psk)
 {
+   char str_port[6];
+
+   /* OpenSSL removed BIO_set_conn_int_port(); this works on all versions at
+    * least from 1.0
+    */
+   snprintf(str_port, sizeof(str_port), "%hd", (short)port);
 	memset(c, 0x00, sizeof(nscang_client_t));
 
 	c->ssl_ctx = SSL_CTX_new(SSLv23_client_method());
@@ -84,7 +90,7 @@ nscang_client_init(nscang_client_t *c, char *host, int port, char *ciphers,
 		return 0;
 	}
 	BIO_set_conn_hostname(c->bio, host);
-	BIO_set_conn_int_port(c->bio, &port);
+	BIO_set_conn_port(c->bio, str_port);
 	BIO_set_nbio(c->bio, 1);
 
 	c->ssl = SSL_new(c->ssl_ctx);

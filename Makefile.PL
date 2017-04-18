@@ -61,7 +61,7 @@ WriteMakefile(
     LIBS              => [ ExtUtils::PkgConfig->libs($openssl_info{pkg}) ],
     DEFINE            => '',
     INC               => '-I.',
-    CCFLAGS           => "$Config{ccflags} -Wconversion -Wextra",
+    CCFLAGS           => "$Config{ccflags} -Wextra",
     OBJECT            => '$(O_FILES)',
     META_ADD          => {
         repository => {
