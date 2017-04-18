@@ -20,7 +20,7 @@ None. Testing requires `Test::More`, `Test::Exception`, `Test::Pod` and
 
 ## COPYRIGHT AND LICENCE
 
-Copyright © 2015 by Matthias Bethke
+Copyright © 2015-2017 by Matthias Bethke
 
 Portions Copyright © by Alexander Golovko <alexandro@onsec.ru>
 
