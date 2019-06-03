@@ -218,4 +218,4 @@ command(self, command)
    self->client_initialized = 0;
    nscang_client_free(&(self->client));
 
-   croak(errstr);
+   croak("%s", errstr);
