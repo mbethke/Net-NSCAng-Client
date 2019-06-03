@@ -1,5 +1,6 @@
 // vim:set cindent:
 #include <openssl/ssl.h>
+#include <openssl/opensslv.h>
 #include <string.h>
 #define PERL_NO_GET_CONTEXT
 #include "EXTERN.h"
@@ -86,8 +87,12 @@ MODULE = Net::NSCAng::Client		PACKAGE = Net::NSCAng::Client
 PROTOTYPES: DISABLE
 
 BOOT:
-	SSL_library_init();
-	SSL_load_error_strings();
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+   SSL_library_init();
+#else
+   OPENSSL_init_ssl(0, NULL);
+#endif
+   SSL_load_error_strings();
 
 Net::NSCAng::Client
 _new(class, host, port, identity, psk, ciphers, node_name, svc_description, timeout)

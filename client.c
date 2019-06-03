@@ -29,6 +29,8 @@
 #include <openssl/err.h>
 #include <string.h>
 #include <time.h>
+#include <stdlib.h>
+#include <sys/select.h>
 
 #include "client.h"
 #include "uthash.h"
@@ -84,7 +86,11 @@ nscang_client_init(nscang_client_t *c, char *host, int port, char *ciphers,
 		return 0;
 	}
 	BIO_set_conn_hostname(c->bio, host);
-	BIO_set_conn_int_port(c->bio, &port);
+   {
+      char port_s[6];
+      snprintf(port_s, sizeof(port_s), "%hd", (short)port);
+      BIO_set_conn_port(c->bio, port_s);
+   }
 	BIO_set_nbio(c->bio, 1);
 
 	c->ssl = SSL_new(c->ssl_ctx);
